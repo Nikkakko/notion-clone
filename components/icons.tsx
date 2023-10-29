@@ -10,6 +10,8 @@ import {
   type LucideIcon,
   type LucideProps,
   FolderDown,
+  Loader,
+  Calendar,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -17,6 +19,8 @@ export type Icon = LucideIcon;
 export const Icons = {
   pencil: Pencil,
   search: Search,
+  loader: Loader,
+  calendar:Calendar,
   fileText: FileText,
   folder: Folder,
   folderOpen: FolderOpen,

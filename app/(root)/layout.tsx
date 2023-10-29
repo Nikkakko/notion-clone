@@ -9,7 +9,11 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
   const user = await currentUser();
-  const folders = await db.folder.findMany({});
+  const folders = await db.folder.findMany({
+    where: {
+      userId: user?.id as string,
+    },
+  });
 
   return (
     <div className='relative flex min-h-screen'>

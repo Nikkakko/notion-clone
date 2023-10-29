@@ -13,3 +13,10 @@ export function getUserEmail(user: User | null | undefined) {
 
   return email;
 }
+
+export function dateFormat(
+  date: Date | string | number,
+  options?: Intl.DateTimeFormatOptions
+) {
+  return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+}

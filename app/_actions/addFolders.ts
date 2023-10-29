@@ -4,7 +4,7 @@ import { currentUser } from '@clerk/nextjs';
 import { User } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 
-export const addFoldersAction = async () => {
+export const addFoldersAction = async (folderName: string) => {
   const user = await currentUser();
 
   if (!user) {
@@ -15,7 +15,7 @@ export const addFoldersAction = async () => {
 
   await db.folder.create({
     data: {
-      name: 'New Folder',
+      name: folderName || 'New Folder',
       userId: user.id,
       type: 'FOLDER',
     },
@@ -25,7 +25,7 @@ export const addFoldersAction = async () => {
   revalidatePath('/');
 };
 
-export const addNoteAction = async (folderId: string) => {
+export const addNoteAction = async (folderId: string, noteName: string) => {
   const user = await currentUser();
 
   if (!user) {
@@ -33,18 +33,48 @@ export const addNoteAction = async (folderId: string) => {
   }
 
   if (!folderId) {
-    alert('Please select a folder first!');
+    return {
+      error: 'Please select a folder',
+    };
   }
 
   //create new folder
 
   await db.note.create({
     data: {
-      title: 'New Note',
+      title: noteName || 'New Note',
       userId: user.id,
       type: 'FOLDER',
       folderId: folderId,
       content: '',
+    },
+  });
+
+  //revalidate path
+  revalidatePath('/');
+};
+
+export const editNoteAction = async (noteId: string, content: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return;
+  }
+
+  if (!noteId) {
+    return {
+      error: 'Please select a folder',
+    };
+  }
+
+  //create new folder
+
+  await db.note.update({
+    where: {
+      id: noteId,
+    },
+    data: {
+      content: content,
     },
   });
 
