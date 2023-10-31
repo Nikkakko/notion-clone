@@ -9,15 +9,27 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
   const user = await currentUser();
+
   const folders = await db.folder.findMany({
     where: {
       userId: user?.id as string,
     },
   });
 
+  const recentNotes = await db.note.findMany({
+    where: {
+      userId: user?.id as string,
+      type: 'RECENT',
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+    take: 3,
+  });
+
   return (
     <div className='relative flex min-h-screen'>
-      <Sidebar user={user} folders={folders} />
+      <Sidebar user={null} folders={folders} recentNotes={recentNotes} />
       <main className='flex-1'>{children}</main>
     </div>
   );

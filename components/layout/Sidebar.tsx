@@ -5,10 +5,14 @@ import { User } from '@clerk/nextjs/server';
 import * as React from 'react';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
-import { addFoldersAction, addNoteAction } from '@/app/_actions/addFolders';
-import { Folder, NoteType } from '@prisma/client';
+import {
+  addFoldersAction,
+  addNoteAction,
+  deleteFolderAction,
+} from '@/app/_actions/actions';
+import { Folder, Note, NoteType } from '@prisma/client';
 import Link from 'next/link';
-import { usePathname, useParams } from 'next/navigation';
+import { usePathname, useParams, useRouter } from 'next/navigation';
 import { UserButton } from '@clerk/clerk-react';
 import { useToast } from '../ui/use-toast';
 import { AddFolderDialog } from '../AddFolderDialog';
@@ -17,13 +21,15 @@ import { AddNewNoteDialog } from '../AddNewNoteDialog';
 interface SidebarProps {
   user: User | null;
   folders: Folder[];
+  recentNotes: Note[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ user, folders }) => {
+const Sidebar: React.FC<SidebarProps> = ({ folders, recentNotes }) => {
   const [isPending, startTransition] = React.useTransition();
-  const initials = `${user?.firstName?.charAt(0)}${user?.lastName?.charAt(0)}`;
-  const email = getUserEmail(user);
+  // const initials = `${user?.firstName?.charAt(0)}${user?.lastName?.charAt(0)}`;
+  // const email = getUserEmail(user);
   const { id } = useParams();
+  const router = useRouter();
 
   return (
     <div className='min-h-full bg-gray-700 p-7 w-72'>
@@ -50,30 +56,65 @@ const Sidebar: React.FC<SidebarProps> = ({ user, folders }) => {
                 {link.title === 'Folders' && <AddFolderDialog />}
               </div>
 
-              {/* map throught folders and filter based on their type */}
+              {/* RECENTS */}
+              {link.type === 'RECENT' &&
+                recentNotes.map(note => (
+                  <Link
+                    key={note.id}
+                    href={`/folder/${note.folderId}?note=${note.id}`}
+                    className='w-full'
+                  >
+                    <div
+                      className={cn(
+                        'flex items-center space-x-2   p-1 ',
+                        id === note.id && 'bg-gray-600 rounded-md '
+                      )}
+                    >
+                      {/* <Icons.note size={18} /> */}
+                      <h3 className='text-sm font-medium'>{note.title}</h3>
+                    </div>
+                  </Link>
+                ))}
 
+              {/* FOLDERS */}
               {folders.map(
                 folder =>
                   folder.type === link.type && (
-                    <Link
+                    <div
+                      className='flex items-center  w-full justify-between'
                       key={folder.id}
-                      href={`/folder/${folder.id}`}
-                      className='w-full'
                     >
-                      <div
-                        className={cn(
-                          'flex items-center space-x-2   p-1 ',
-                          id === folder.id && 'bg-gray-600 rounded-md '
-                        )}
-                      >
-                        <Icons.folder size={18} />
-                        <h3 className='text-sm font-medium'>{folder.name}</h3>
-                      </div>
-                    </Link>
+                      <Link href={`/folder/${folder.id}`} className='w-full'>
+                        <div
+                          className={cn(
+                            'flex items-center space-x-2 p-1 ',
+                            id === folder.id && 'bg-gray-600 rounded-md '
+                          )}
+                        >
+                          <Icons.folder size={18} />
+                          <h3 className='text-sm font-medium'>{folder.name}</h3>
+                        </div>
+                      </Link>
+                      <Icons.trash
+                        className='w-4 h-4 ml-2
+                          hover:text-red-300
+                          cursor-pointer
+                          
+                          
+                        '
+                        onClick={() => {
+                          startTransition(async () => {
+                            await deleteFolderAction(folder.id);
+                            router.push(`/folder/${folders[0].id}`);
+                          });
+                        }}
+                      />
+                    </div>
                   )
               )}
             </div>
 
+            {/* SUBLINKS  */}
             <div className='flex flex-col space-y-2'>
               {link.sublinks?.map(sublink => (
                 <Link key={sublink.title} href={sublink.href}>

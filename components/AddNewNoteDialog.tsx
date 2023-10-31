@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from './icons';
-import { addFoldersAction, addNoteAction } from '@/app/_actions/addFolders';
+import { addFoldersAction, addNoteAction } from '@/app/_actions/actions';
 import { useToast } from './ui/use-toast';
 
 export function AddNewNoteDialog({ id }: { id: string }) {
@@ -25,7 +25,7 @@ export function AddNewNoteDialog({ id }: { id: string }) {
   const handleAddNote = () => {
     startTransition(async () => {
       try {
-        const note = await addNoteAction(id,name);
+        const note = await addNoteAction(id, name);
         toast({
           title: 'Note added successfully',
           description: 'Your note has been added to the folder',
@@ -39,6 +39,7 @@ export function AddNewNoteDialog({ id }: { id: string }) {
         }
 
         setIsOpen(false);
+        setName('');
       } catch (error) {
         toast({
           title: `${error}`,

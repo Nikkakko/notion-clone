@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from './icons';
-import { addFoldersAction } from '@/app/_actions/addFolders';
+import { addFoldersAction } from '@/app/_actions/actions';
 
 export function AddFolderDialog() {
   const [isOpen, setIsOpen] = React.useState(false);

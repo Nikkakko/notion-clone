@@ -20,7 +20,7 @@ export const Icons = {
   pencil: Pencil,
   search: Search,
   loader: Loader,
-  calendar:Calendar,
+  calendar: Calendar,
   fileText: FileText,
   folder: Folder,
   folderOpen: FolderOpen,

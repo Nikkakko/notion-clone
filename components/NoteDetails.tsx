@@ -2,11 +2,14 @@
 import { Note } from '@prisma/client';
 import * as React from 'react';
 import { Icons } from './icons';
-import { dateFormat } from '@/lib/utils';
+import { cn, dateFormat } from '@/lib/utils';
 import EditorBar from './EditorBar';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
-import { editNoteAction } from '@/app/_actions/addFolders';
+import {
+  addNoteToFavoritesAction,
+  editNoteAction,
+} from '@/app/_actions/actions';
 import Tiptap from './TipTap';
 
 interface NoteDetailsProps {
@@ -30,6 +33,21 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
         <div className='flex items-center space-x-2'>
           <Icons.folder size={18} />
           <p>{folderName}</p>
+        </div>
+
+        <div className='flex items-center space-x-2'>
+          <Icons.star
+            size={18}
+            className={cn('cursor-pointer', {
+              'text-blue-500': note?.isFavorite,
+            })}
+            onClick={() => {
+              startTransition(async () => {
+                await addNoteToFavoritesAction(note?.id!);
+              });
+            }}
+          />
+          <p>{note?.isFavorite ? 'Favorite' : 'Not Favorite'}</p>
         </div>
       </div>
 

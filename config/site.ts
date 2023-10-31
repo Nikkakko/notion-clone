@@ -9,6 +9,7 @@ export const siteConfig = {
     links: [
       {
         title: 'Recents',
+        type: 'RECENT',
       },
       {
         title: 'Folders',
