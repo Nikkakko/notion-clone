@@ -13,11 +13,7 @@ datasource db {
 //make enum for type
 enum NoteType {
   RECENT
-  ARCHIVE
-  TRASH
-  FAVORITE
   FOLDER
-  
 }
 
 
@@ -31,6 +27,9 @@ model Note {
   content  String
   type     NoteType
   isFavorite Boolean? @default(false)
+  isArchived Boolean? @default(false)
+  isDeleted Boolean? @default(false)
+  
   
 
   //timestamps

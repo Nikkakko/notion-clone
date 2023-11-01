@@ -83,7 +83,6 @@ export const editNoteAction = async (noteId: string, content: string) => {
 
 export const addNoteToRecentAction = async (noteId: string) => {
   const user = await currentUser();
-  console.log(noteId);
 
   if (!user) {
     return;
@@ -93,6 +92,22 @@ export const addNoteToRecentAction = async (noteId: string) => {
     return {
       error: 'Please select a folder',
     };
+  }
+
+  const note = await db.note.findUnique({
+    where: {
+      id: noteId,
+    },
+  });
+
+  if (!note) {
+    return {
+      error: 'Note not found',
+    };
+  }
+
+  if (note.type === 'RECENT') {
+    return;
   }
 
   await db.note.update({
@@ -150,12 +165,38 @@ export const moveNoteToTrashAction = async (noteId: string) => {
       id: noteId,
     },
     data: {
-      type: 'TRASH',
+      isDeleted: true,
     },
   });
 
   //revalidate path
   revalidatePath(`/`);
+};
+
+export const restoreNoteAction = async (noteId: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return;
+  }
+
+  if (!noteId) {
+    return {
+      error: 'Please select a folder',
+    };
+  }
+
+  await db.note.update({
+    where: {
+      id: noteId,
+    },
+    data: {
+      isDeleted: false,
+    },
+  });
+
+  //revalidate path
+  revalidatePath(`/trash`);
 };
 
 export const deleteNoteAction = async (noteId: string) => {
@@ -238,7 +279,7 @@ export const archiveNoteAction = async (noteId: string) => {
       userId: user.id,
     },
     data: {
-      type: 'ARCHIVE',
+      isArchived: true,
     },
   });
 

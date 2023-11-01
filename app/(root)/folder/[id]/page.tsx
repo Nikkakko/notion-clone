@@ -20,6 +20,7 @@ async function FolderPage({ params, searchParams }: FolderPageProps) {
     where: {
       userId: user?.id as string,
       folderId: params?.id,
+      isDeleted: false,
     },
   });
 

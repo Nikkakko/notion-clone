@@ -39,7 +39,7 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
           <Icons.star
             size={18}
             className={cn('cursor-pointer', {
-              'text-blue-500': note?.isFavorite,
+              'text-yellow-500 fill-yellow-500': note?.isFavorite,
             })}
             onClick={() => {
               startTransition(async () => {
@@ -47,7 +47,7 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
               });
             }}
           />
-          <p>{note?.isFavorite ? 'Favorite' : 'Not Favorite'}</p>
+          <p>{note?.isFavorite ? 'Favorite' : 'Add to favorite'}</p>
         </div>
       </div>
 

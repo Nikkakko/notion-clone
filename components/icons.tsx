@@ -12,6 +12,7 @@ import {
   FolderDown,
   Loader,
   Calendar,
+  Undo,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -21,8 +22,9 @@ export const Icons = {
   search: Search,
   loader: Loader,
   calendar: Calendar,
-  fileText: FileText,
+  document: FileText,
   folder: Folder,
+  undo: Undo,
   folderOpen: FolderOpen,
   star: Star,
   trash: Trash,

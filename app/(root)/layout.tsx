@@ -20,6 +20,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
     where: {
       userId: user?.id as string,
       type: 'RECENT',
+      isDeleted: false,
     },
     orderBy: {
       updatedAt: 'desc',

@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ folders, recentNotes }) => {
                         id === note.id && 'bg-gray-600 rounded-md '
                       )}
                     >
-                      {/* <Icons.note size={18} /> */}
+                      <Icons.document className='w-4 h-4 ' />
                       <h3 className='text-sm font-medium'>{note.title}</h3>
                     </div>
                   </Link>
