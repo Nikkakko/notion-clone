@@ -14,9 +14,10 @@ export function getUserEmail(user: User | null | undefined) {
   return email;
 }
 
-export function dateFormat(
-  date: Date | string | number,
-  options?: Intl.DateTimeFormatOptions
-) {
-  return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+export function formatDate(date: Date | string | number) {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date(date));
 }

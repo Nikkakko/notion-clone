@@ -3,6 +3,7 @@ import db from '@/lib/db';
 import { currentUser } from '@clerk/nextjs';
 import NotesList from '@/components/NotesList';
 import NoteDetails from '@/components/NoteDetails';
+import EmptyNote from '@/components/EmptyNote';
 
 interface FolderPageProps {
   params: {
@@ -38,10 +39,8 @@ async function FolderPage({ params, searchParams }: FolderPageProps) {
     return (
       <div className='flex'>
         <NotesList notes={notes} folderName={folderName?.name as string} />
-        <div className='flex-1 p-12'>
-          <h1 className='text-3xl'>
-            {notes.length ? 'Select a note' : 'No notes in this folder'}
-          </h1>
+        <div className='flex-1'>
+          <EmptyNote />
         </div>
       </div>
     );
@@ -55,9 +54,9 @@ async function FolderPage({ params, searchParams }: FolderPageProps) {
   return (
     <div className='flex'>
       <NotesList notes={notes} folderName={folderName?.name as string} />
-      {note && (
+      {note ? (
         <NoteDetails note={note} folderName={folderName?.name as string} />
-      )}
+      ) : null}
     </div>
   );
 }

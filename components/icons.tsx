@@ -13,6 +13,7 @@ import {
   Loader,
   Calendar,
   Undo,
+  FolderPlus,
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -23,6 +24,7 @@ export const Icons = {
   loader: Loader,
   calendar: Calendar,
   document: FileText,
+  folderPlus: FolderPlus,
   folder: Folder,
   undo: Undo,
   folderOpen: FolderOpen,

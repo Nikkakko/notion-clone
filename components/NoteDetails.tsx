@@ -2,7 +2,7 @@
 import { Note } from '@prisma/client';
 import * as React from 'react';
 import { Icons } from './icons';
-import { cn, dateFormat } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import EditorBar from './EditorBar';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
@@ -19,7 +19,13 @@ interface NoteDetailsProps {
 
 const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
   const [isPending, startTransition] = React.useTransition();
-  const [content, setContent] = React.useState(note?.content || '');
+  const [content, setContent] = React.useState('');
+
+  console.log(content, 'content');
+
+  // React.useEffect(() => {
+  //   setContent(note?.content || '');
+  // }, [note]);
 
   return (
     <div className='p-12 flex flex-1 flex-col'>
@@ -27,7 +33,7 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
       <div className='flex flex-col space-y-2 mt-4'>
         <div className='flex items-center space-x-2'>
           <Icons.calendar size={18} />
-          <p>{dateFormat(note?.createdAt!)}</p>
+          <p>{formatDate(note?.createdAt!)}</p>
         </div>
 
         <div className='flex items-center space-x-2'>
@@ -57,11 +63,12 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
           value={content}
           onChange={e => setContent(e.target.value)}
         /> */}
-        <Tiptap content={content} onChange={setContent} />
+        <Tiptap content={note?.content as string} onChange={setContent} />
       </div>
 
       <Button
-        className='mt-4'
+        className='mt-4 w-24'
+        variant='default'
         disabled={isPending}
         onClick={() => {
           startTransition(async () => {

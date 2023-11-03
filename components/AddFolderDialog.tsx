@@ -35,7 +35,7 @@ export function AddFolderDialog() {
           variant='ghost'
           size='icon'
         >
-          <Icons.folderAdd className='' />
+          <Icons.folderPlus className='h-5 w-5 hover:text-primary-foreground' />
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>

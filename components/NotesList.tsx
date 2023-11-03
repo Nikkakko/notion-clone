@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { cn, dateFormat } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import qs from 'query-string';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
@@ -88,16 +88,16 @@ const NotesList: React.FC<NotesListProps> = ({
       e.stopPropagation();
       await moveNoteToTrashAction(id);
       resetNoteQuery();
-    });
-    toast({
-      title: 'Note moved to trash',
-      description: 'Note has been moved to trash',
+      toast({
+        title: 'Note moved to trash',
+        description: 'Note has been moved to trash',
+      });
     });
   };
 
   return (
     <ScrollArea className=' h-full rounded-md border '>
-      <div className='flex flex-col  bg-slate-900 p-7 h-full min-h-screen max-h-screen'>
+      <div className='flex flex-col bg-primary-foreground p-7 h-full min-h-screen'>
         <h1>{folderName}</h1>
         {!notes.length && (
           <p className='text-gray-500 mt-4'>
@@ -115,20 +115,19 @@ const NotesList: React.FC<NotesListProps> = ({
                 });
               }}
               className={cn(
-                'cursor-pointer',
-                note.id === noteIdParams && 'bg-slate-800'
+                'cursor-pointer hover:bg-background/5 p-4',
+                note.id === noteIdParams && 'bg-background/5'
               )}
             >
-              <CardContent>
-                <CardHeader className='items-start pl-0'>
-                  <CardTitle>{note.title}</CardTitle>
-                </CardHeader>
-
+              <CardHeader className='p-0'>
+                <CardTitle className='text-sm'>{note.title}</CardTitle>
+              </CardHeader>
+              <CardContent className='p-0 mt-2'>
                 <EditorComp content={note.content} />
               </CardContent>
-              <CardFooter className='justify-between '>
-                <p className='text-sm text-gray-500'>
-                  {dateFormat(note.createdAt)}
+              <CardFooter className='justify-between p-0 mt-2'>
+                <p className='text-sm text-muted-foreground'>
+                  {formatDate(note.createdAt)}
                 </p>
 
                 <div className='flex items-center space-x-1'>

@@ -2,6 +2,7 @@ import * as React from 'react';
 import db from '@/lib/db';
 import { currentUser } from '@clerk/nextjs';
 import NotesList from '@/components/NotesList';
+import { notFound } from 'next/navigation';
 
 interface pageProps {}
 
@@ -13,6 +14,10 @@ async function TrashPage({}: pageProps) {
       isDeleted: true,
     },
   });
+
+  if (!trashedNotes) {
+    return notFound();
+  }
 
   return (
     <div className='flex'>

@@ -52,11 +52,7 @@ export function AddNewNoteDialog({ id }: { id: string }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button
-          className='w-full bg-gray-500'
-          variant='ghost'
-          disabled={isPending}
-        >
+        <Button className='w-full' variant='secondary' disabled={isPending}>
           New Note
         </Button>
       </DialogTrigger>
