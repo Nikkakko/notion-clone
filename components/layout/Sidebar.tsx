@@ -19,6 +19,7 @@ import { useToast } from '../ui/use-toast';
 import { AddFolderDialog } from '../AddFolderDialog';
 import { AddNewNoteDialog } from '../AddNewNoteDialog';
 import { ModeToggle } from '../mode-toggle';
+import SearchBox from '../SearchBox';
 
 interface SidebarProps {
   user: User | null;
@@ -35,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ folders, recentNotes }) => {
   const router = useRouter();
 
   return (
-    <aside className='p-7 w-72 flex flex-col justify-between'>
+    <aside className='hidden p-7 w-72 md:flex flex-col justify-between'>
       <div>
         <div className='flex items-center justify-between'>
           <Link href='/'>
@@ -46,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ folders, recentNotes }) => {
               <Icons.pencil size={18} />
             </div>
           </Link>
-          <Icons.search size={18} />
+          <SearchBox />
         </div>
 
         <div className='flex flex-col space-y-7 mt-7'>

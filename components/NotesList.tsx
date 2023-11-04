@@ -100,7 +100,7 @@ const NotesList: React.FC<NotesListProps> = ({
       <div className='flex flex-col bg-primary-foreground p-7 h-full min-h-screen'>
         <h1>{folderName}</h1>
         {!notes.length && (
-          <p className='text-gray-500 mt-4'>
+          <p className='text-muted-foreground mt-4'>
             {emptyMessage || 'No notes in this folder'}
           </p>
         )}

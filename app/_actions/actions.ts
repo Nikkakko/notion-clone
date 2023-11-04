@@ -166,6 +166,8 @@ export const moveNoteToTrashAction = async (noteId: string) => {
     },
     data: {
       isDeleted: true,
+      isArchived: false,
+      isFavorite: false,
     },
   });
 
@@ -273,16 +275,55 @@ export const archiveNoteAction = async (noteId: string) => {
     };
   }
 
+  const note = await db.note.findUnique({
+    where: {
+      id: noteId,
+    },
+  });
+
+  if (!note) {
+    return {
+      error: 'Note not found',
+    };
+  }
+
   await db.note.update({
     where: {
       id: noteId,
       userId: user.id,
     },
     data: {
-      isArchived: true,
+      isArchived: !note.isArchived,
     },
   });
 
   //revalidate path
   revalidatePath(`/`);
 };
+
+export async function filterNotesAction(query: string) {
+  const user = await currentUser();
+
+  if (!user) {
+    return;
+  }
+
+  const notes = await db.note.findMany({
+    where: {
+      userId: user.id,
+      isDeleted: false,
+      isArchived: false,
+      title: {
+        contains: query,
+        mode: 'insensitive',
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+
+    take: 10,
+  });
+
+  return notes;
+}

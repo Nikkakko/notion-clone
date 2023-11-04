@@ -2,6 +2,8 @@ import Sidebar from '@/components/layout/Sidebar';
 import { currentUser } from '@clerk/nextjs';
 import * as React from 'react';
 import db from '@/lib/db';
+import MobileSidebar from '@/components/layout/mobile-nav';
+import NoteDetails from '@/components/NoteDetails';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -33,6 +35,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
       {user && (
         <Sidebar user={null} folders={folders} recentNotes={recentNotes} />
       )}
+      <MobileSidebar user={null} folders={folders} recentNotes={recentNotes} />
       <main className='flex-1'>{children}</main>
     </div>
   );

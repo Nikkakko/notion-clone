@@ -54,9 +54,9 @@ async function FolderPage({ params, searchParams }: FolderPageProps) {
   return (
     <div className='flex'>
       <NotesList notes={notes} folderName={folderName?.name as string} />
-      {note ? (
+      <div className='flex-1'>
         <NoteDetails note={note} folderName={folderName?.name as string} />
-      ) : null}
+      </div>
     </div>
   );
 }
