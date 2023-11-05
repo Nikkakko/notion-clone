@@ -13,13 +13,19 @@ import {
 import { useUser, SignInButton, useClerk } from '@clerk/nextjs';
 import { Folder, Note, NoteType } from '@prisma/client';
 import Link from 'next/link';
-import { usePathname, useParams, useRouter } from 'next/navigation';
+import {
+  usePathname,
+  useParams,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { UserButton } from '@clerk/clerk-react';
 import { useToast } from '../ui/use-toast';
 import { AddFolderDialog } from '../AddFolderDialog';
 import { AddNewNoteDialog } from '../AddNewNoteDialog';
 import { ModeToggle } from '../mode-toggle';
 import SearchBox from '../SearchBox';
+import qs from 'query-string';
 
 interface SidebarProps {
   user: User | null;
@@ -32,8 +38,29 @@ const Sidebar: React.FC<SidebarProps> = ({ folders, recentNotes }) => {
   const { user, isSignedIn } = useUser();
   const initials = `${user?.firstName?.charAt(0)}${user?.lastName?.charAt(0)}`;
   const { id } = useParams();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
+  const noteParamId = searchParams.get('note');
+
+  const noteQuery = (noteId: string) => {
+    const url = qs.stringifyUrl(
+      {
+        url: '/',
+        query: {
+          note: noteId,
+        },
+      },
+
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      }
+    );
+
+    router.push(url);
+  };
 
   return (
     <aside className='hidden p-7 w-72 md:flex flex-col justify-between'>
@@ -65,20 +92,19 @@ const Sidebar: React.FC<SidebarProps> = ({ folders, recentNotes }) => {
                 {/* RECENTS */}
                 {link.type === 'RECENT' &&
                   recentNotes.map(note => (
-                    <Link
+                    <div
                       key={note.id}
-                      href={`/folder/${note.folderId}?note=${note.id}`}
-                      className='w-full'
+                      onClick={() => noteQuery(note.id)}
+                      className={cn(
+                        'w-full flex items-center  hover:bg-primary-foreground rounded-md cursor-pointer space-x-2 p-1 mt-1',
+                        note.id === noteParamId &&
+                          pathname !== `/folder/${note.folderId}` &&
+                          'bg-primary-foreground rounded-md hover:bg-primary-foreground'
+                      )}
                     >
-                      <div
-                        className={cn(
-                          'flex items-center space-x-2 p-1 mt-1 hover:bg-primary-foreground rounded-md'
-                        )}
-                      >
-                        <Icons.document className='w-4 h-4 ' />
-                        <h3 className='text-sm font-medium'>{note.title}</h3>
-                      </div>
-                    </Link>
+                      <Icons.document className='w-4 h-4 ' />
+                      <h3 className='text-sm font-medium'>{note.title}</h3>
+                    </div>
                   ))}
 
                 {/* FOLDERS */}

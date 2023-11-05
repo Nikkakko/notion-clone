@@ -13,6 +13,7 @@ import {
 } from '@/app/_actions/actions';
 import Tiptap from './TipTap';
 import VerticalMenu from './VerticalMenu';
+import { useToast } from './ui/use-toast';
 
 interface NoteDetailsProps {
   note: Note | null;
@@ -22,6 +23,24 @@ interface NoteDetailsProps {
 const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
   const [isPending, startTransition] = React.useTransition();
   const [content, setContent] = React.useState('');
+  const { toast } = useToast();
+
+  const handleSave = (noteId: string) => {
+    startTransition(async () => {
+      const data = await editNoteAction(noteId, content as string);
+      toast({
+        title: 'Note saved',
+        description: 'Your note has been saved successfully',
+      });
+
+      if (data?.notOwner) {
+        toast({
+          title: 'Not owner',
+          description: 'You can not edit this note',
+        });
+      }
+    });
+  };
 
   return (
     <div className='p-12 flex flex-1 flex-col'>
@@ -53,11 +72,7 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
         className='mt-4 w-24'
         variant='default'
         disabled={isPending}
-        onClick={() => {
-          startTransition(async () => {
-            await editNoteAction(note?.id!, content as string);
-          });
-        }}
+        onClick={() => handleSave(note?.id as string)}
       >
         Save
       </Button>

@@ -68,6 +68,20 @@ export const editNoteAction = async (noteId: string, content: string) => {
     };
   }
 
+  const note = await db.note.findUnique({
+    where: {
+      userId: user.id,
+      id: noteId,
+    },
+  });
+
+  //if user is not the owner of the note return error
+  if (note?.userId !== user.id) {
+    return {
+      notOwner: 'You are not the owner of this note',
+    };
+  }
+
   await db.note.update({
     where: {
       id: noteId,
@@ -78,7 +92,7 @@ export const editNoteAction = async (noteId: string, content: string) => {
   });
 
   //revalidate path
-  revalidatePath(`/folder`);
+  revalidatePath(`/`);
 };
 
 export const addNoteToRecentAction = async (noteId: string) => {

@@ -66,7 +66,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({}) => {
 
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput
-          placeholder='Search products...'
+          placeholder='Search Notes...'
           value={query}
           onValueChange={setQuery}
         />
@@ -82,28 +82,26 @@ const SearchBox: React.FC<SearchBoxProps> = ({}) => {
             //unique command Group
 
             <>
-              <>
-                {data?.map(note => {
-                  {
-                    return (
-                      <CommandItem
-                        value={note.title}
-                        onSelect={() =>
-                          handleSelect(() =>
-                            router.push(
-                              `/folder/${note.folderId}?note=${note.id}`
-                            )
+              {data?.map(note => {
+                {
+                  return (
+                    <CommandItem
+                      value={note.title}
+                      onSelect={() =>
+                        handleSelect(() =>
+                          router.push(
+                            `/folder/${note.folderId}?note=${note.id}`
                           )
-                        }
-                      >
-                        <div className='flex items-center space-x-2'>
-                          <span>{note.title}</span>
-                        </div>
-                      </CommandItem>
-                    );
-                  }
-                })}
-              </>
+                        )
+                      }
+                    >
+                      <div className='flex items-center space-x-2'>
+                        <span>{note.title}</span>
+                      </div>
+                    </CommandItem>
+                  );
+                }
+              })}
             </>
           )}
         </CommandList>

@@ -33,6 +33,7 @@ async function FavoritesPage({ searchParams }: pageProps) {
 
   const note = await db.note.findUnique({
     where: {
+      userId: user?.id as string,
       id: searchParams?.note,
     },
   });
