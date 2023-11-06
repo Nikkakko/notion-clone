@@ -68,7 +68,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
   return (
     <div className='flex-1'>
-      {/* <NoteDetails note={note} folderName={folderName?.name as string} /> */}
+      <NoteDetails note={note} folderName={folderName?.name as string} />
     </div>
   );
 }
