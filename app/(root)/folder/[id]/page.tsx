@@ -37,9 +37,9 @@ async function FolderPage({ params, searchParams }: FolderPageProps) {
 
   if (!searchParams?.note) {
     return (
-      <div className='flex'>
+      <div className='flex flex-col md:flex-row'>
         <NotesList notes={notes} folderName={folderName?.name as string} />
-        <div className='flex-1'>
+        <div className='flex-1 '>
           <EmptyNote />
         </div>
       </div>
@@ -52,8 +52,9 @@ async function FolderPage({ params, searchParams }: FolderPageProps) {
   });
 
   return (
-    <div className='flex'>
+    <div className='flex flex-col md:flex-row'>
       <NotesList notes={notes} folderName={folderName?.name as string} />
+
       <div className='flex-1'>
         <NoteDetails note={note} folderName={folderName?.name as string} />
       </div>

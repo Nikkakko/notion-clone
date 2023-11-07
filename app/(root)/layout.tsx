@@ -31,7 +31,7 @@ const RootLayout: React.FC<RootLayoutProps> = async ({ children }) => {
   });
 
   return (
-    <div className='relative flex min-h-screen'>
+    <div className='relative flex flex-col md:flex-row min-h-screen '>
       {user && (
         <Sidebar user={null} folders={folders} recentNotes={recentNotes} />
       )}

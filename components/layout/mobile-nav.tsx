@@ -22,7 +22,12 @@ import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { AddFolderDialog } from '../AddFolderDialog';
 import { AddNewNoteDialog } from '../AddNewNoteDialog';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { deleteFolderAction } from '@/app/_actions/actions';
 import { SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import { ModeToggle } from '../mode-toggle';
@@ -32,6 +37,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import qs from 'query-string';
 
 interface SidebarProps {
   user: User | null;
@@ -41,6 +47,7 @@ interface SidebarProps {
 
 export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = React.useTransition();
   const { user, isSignedIn } = useUser();
 
@@ -48,9 +55,29 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
   const { id } = useParams();
   const pathname = usePathname();
   const router = useRouter();
+  const noteParamId = searchParams.get('note');
+
+  const noteQuery = (noteId: string) => {
+    const url = qs.stringifyUrl(
+      {
+        url: '/',
+        query: {
+          note: noteId,
+        },
+      },
+
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      }
+    );
+
+    router.push(url);
+    setIsOpen(false);
+  };
 
   return (
-    <div className='md:hidden'>
+    <div className='md:hidden border-b mb-2 md:mb-0 md:border-0 flex items-center justify-between p-2'>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button
@@ -93,20 +120,19 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
                   {/* RECENTS */}
                   {link.type === 'RECENT' &&
                     recentNotes.map(note => (
-                      <Link
+                      <div
                         key={note.id}
-                        href={`/folder/${note.folderId}?note=${note.id}`}
-                        className='w-full'
+                        onClick={() => noteQuery(note.id)}
+                        className={cn(
+                          'w-full flex items-center  hover:bg-primary-foreground rounded-md cursor-pointer space-x-2 p-1 mt-1',
+                          note.id === noteParamId &&
+                            pathname !== `/folder/${note.folderId}` &&
+                            'bg-primary-foreground rounded-md hover:bg-primary-foreground'
+                        )}
                       >
-                        <div
-                          className={cn(
-                            'flex items-center space-x-2 p-1 mt-1 hover:bg-primary-foreground rounded-md'
-                          )}
-                        >
-                          <Icons.document className='w-4 h-4 ' />
-                          <h3 className='text-sm font-medium'>{note.title}</h3>
-                        </div>
-                      </Link>
+                        <Icons.document className='w-4 h-4 ' />
+                        <h3 className='text-sm font-medium'>{note.title}</h3>
+                      </div>
                     ))}
 
                   {/* FOLDERS */}
@@ -120,6 +146,7 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
                           <Link
                             href={`/folder/${folder.id}`}
                             className='w-full'
+                            onClick={() => setIsOpen(false)}
                           >
                             <div
                               className={cn(
@@ -158,7 +185,11 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
                 {/* SUBLINKS  */}
                 <div className='flex flex-col space-y-2'>
                   {link.sublinks?.map(sublink => (
-                    <Link key={sublink.title} href={sublink.href}>
+                    <Link
+                      key={sublink.title}
+                      href={sublink.href}
+                      onClick={() => setIsOpen(false)}
+                    >
                       <div
                         className={cn(
                           'flex items-center space-x-2  p-1',
@@ -177,21 +208,15 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
               </div>
             ))}
           </div>
-          <SheetFooter className=''>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center space-x-2'>
-                {isSignedIn ? (
-                  <UserButton afterSignOutUrl='/' />
-                ) : (
-                  <SignInButton />
-                )}
-                {isSignedIn && <p>{initials}</p>}
-              </div>
-              <ModeToggle />
-            </div>
-          </SheetFooter>
         </SheetContent>
       </Sheet>
+      <div className='flex items-center space-x-2'>
+        <div className='flex items-center space-x-2'>
+          {isSignedIn ? <UserButton afterSignOutUrl='/' /> : <SignInButton />}
+          {isSignedIn && <p>{initials}</p>}
+        </div>
+        <ModeToggle />
+      </div>
     </div>
   );
 }

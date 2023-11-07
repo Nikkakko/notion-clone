@@ -15,10 +15,15 @@ export default async function Home({ searchParams }: HomeProps) {
 
   if (!searchParams?.note || !user) {
     return (
-      <div className='flex items-center justify-center min-h-screen'>
+      <div
+        className='flex items-center justify-center 
+      h-[calc(100vh-20rem)] md:h-[calc(100vh-16rem)]
+      
+      '
+      >
         {user ? (
           <div>
-            <h1 className='mt-8 text-5xl font-bold text-center max-w-md'>
+            <h1 className='md:mt-8 text-5xl font-bold text-center max-w-md'>
               Your Ideas,
               <br />
               Documents and Notes in one place

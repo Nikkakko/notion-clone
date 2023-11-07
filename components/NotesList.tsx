@@ -95,16 +95,18 @@ const NotesList: React.FC<NotesListProps> = ({
     });
   };
 
+  // className='flex flex-col bg-primary-foreground p-7 h-full min-h-screen'
+
   return (
-    <ScrollArea className=' h-full rounded-md border '>
-      <div className='flex flex-col bg-primary-foreground p-7 h-full min-h-screen'>
-        <h1>{folderName}</h1>
+    <ScrollArea className='h-full rounded-md border '>
+      <div className='flex md:flex-col md:h-screen  bg-primary-foreground p-2 overflow-x-auto w-screen md:w-full '>
+        <h1 className='hidden md:block'>{folderName}</h1>
         {!notes.length && (
-          <p className='text-muted-foreground mt-4'>
+          <p className='text-muted-foreground md:mt-4'>
             {emptyMessage || 'No notes in this folder'}
           </p>
         )}
-        <div className='flex flex-col space-y-4 mt-4'>
+        <div className='flex flex-row space-x-2 md:space-x-0 md:flex-col md:space-y-4 md:mt-4'>
           {notes.map(note => (
             <Card
               key={note.id}
@@ -115,17 +117,17 @@ const NotesList: React.FC<NotesListProps> = ({
                 });
               }}
               className={cn(
-                'cursor-pointer hover:bg-background/5 p-4',
+                'cursor-pointer hover:bg-background/5 p-2 md:p-4 ',
                 note.id === noteIdParams && 'bg-background/5'
               )}
             >
               <CardHeader className='p-0'>
                 <CardTitle className='text-sm'>{note.title}</CardTitle>
               </CardHeader>
-              <CardContent className='p-0 mt-2'>
+              <CardContent className='p-0 mt-2 hidden md:block'>
                 <EditorComp content={note.content} />
               </CardContent>
-              <CardFooter className='justify-between p-0 mt-2'>
+              <CardFooter className='justify-between p-0 mt-2 hidden md:block'>
                 <p className='text-sm text-muted-foreground'>
                   {formatDate(note.createdAt)}
                 </p>

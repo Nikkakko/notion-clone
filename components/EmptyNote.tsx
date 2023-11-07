@@ -6,7 +6,11 @@ interface EmptyNoteProps {}
 
 const EmptyNote: React.FC<EmptyNoteProps> = ({}) => {
   return (
-    <div className='flex flex-col space-y-2 items-center justify-center h-screen'>
+    <div
+      className='flex flex-col space-y-2 items-center justify-center 
+    h-[calc(100vh-20rem)] md:h-[calc(100vh-16rem)] 
+      '
+    >
       <Icons.document className='w-28 h-28' />
       <p className='text-2xl font-semibold text-center'>
         Select a note to view
