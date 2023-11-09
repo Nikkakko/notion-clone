@@ -49,7 +49,7 @@ async function FavoritesPage({ searchParams }: pageProps) {
   });
 
   return (
-    <div className='flex'>
+    <div className='flex flex-col md:flex-row'>
       <NotesList
         notes={favoriteNotes}
         folderName='Favorites'
