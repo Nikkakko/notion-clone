@@ -39,81 +39,86 @@ const EditorBar: React.FC<EditorBarProps> = ({ editor }) => {
 
   if (!editor) return null;
   return (
-    <div className='mt-12 border border-input bg-transparent rounded-md w-fit max-w-fit'>
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('heading')}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      >
-        <Heading2 className='h-4 w-4' />
-      </Toggle>
+    <div className='mt-12 border border-input bg-transparent rounded-md w-full max-w-sm'>
+      <div className='flex items-center  space-x-2 flex-wrap w-full'>
+        <Toggle
+          size='sm'
+          pressed={editor.isActive('heading')}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+        >
+          <Heading2 className='h-4 w-4' />
+        </Toggle>
 
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('bold')}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-      >
-        <Bold className='h-4 w-4' />
-      </Toggle>
+        <Toggle
+          size='sm'
+          pressed={editor.isActive('bold')}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+        >
+          <Bold className='h-4 w-4' />
+        </Toggle>
 
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('italic')}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-      >
-        <Italic className='h-4 w-4' />
-      </Toggle>
+        <Toggle
+          size='sm'
+          pressed={editor.isActive('italic')}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+        >
+          <Italic className='h-4 w-4' />
+        </Toggle>
 
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('strike')}
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-      >
-        <Strikethrough className='h-4 w-4' />
-      </Toggle>
+        <Toggle
+          size='sm'
+          pressed={editor.isActive('strike')}
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+        >
+          <Strikethrough className='h-4 w-4' />
+        </Toggle>
 
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('bulletList')}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        <List className='h-4 w-4' />
-      </Toggle>
+        <Toggle
+          size='sm'
+          pressed={editor.isActive('bulletList')}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+        >
+          <List className='h-4 w-4' />
+        </Toggle>
 
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('orderedList')}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        <ListOrdered className='h-4 w-4' />
-      </Toggle>
+        <Toggle
+          size='sm'
+          pressed={editor.isActive('orderedList')}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        >
+          <ListOrdered className='h-4 w-4' />
+        </Toggle>
 
-      <Toggle
-        size='sm'
-        pressed={editor.isActive('underline')}
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-      >
-        <Underline className='h-4 w-4' />
-      </Toggle>
+        <Toggle
+          size='sm'
+          className='px-0 md:px-2.5'
+          pressed={editor.isActive('underline')}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+        >
+          <Underline className='h-4 w-4 p0' />
+        </Toggle>
 
-      <Select
-        onValueChange={value => {
-          editor.chain().focus().setFontSize(value.toString()).run();
-        }}
-      >
-        <SelectTrigger className='w-fit'>
-          <SelectValue defaultValue={'12'} placeholder='12' />
-        </SelectTrigger>
-        <SelectContent className=''>
-          <SelectGroup>
-            {fontSizes.map(size => (
-              <SelectItem key={size} value={size} disabled={isPending}>
-                {size}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+        <Select
+          onValueChange={value => {
+            editor.chain().focus().setFontSize(value.toString()).run();
+          }}
+        >
+          <SelectTrigger className='w-fit border-none m-0 p-[10px]'>
+            <SelectValue defaultValue={'12'} placeholder='12' />
+          </SelectTrigger>
+          <SelectContent className=''>
+            <SelectGroup>
+              {fontSizes.map(size => (
+                <SelectItem key={size} value={size} disabled={isPending}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 };

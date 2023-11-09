@@ -50,6 +50,7 @@ const NoteDetails: React.FC<NoteDetailsProps> = ({ note, folderName }) => {
           noteId={note?.id}
           isFavorite={note?.isFavorite}
           isArchived={note?.isArchived}
+          isDeleted={note?.isDeleted}
         />
       </div>
       <div className='flex flex-col space-y-2 mt-4'>

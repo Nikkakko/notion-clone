@@ -48,7 +48,7 @@ async function ArchivedPage({ searchParams }: pageProps) {
   });
 
   return (
-    <div className='flex'>
+    <div className='flex flex-col md:flex-row'>
       <NotesList
         notes={archivedNotes}
         folderName='Archived'

@@ -35,7 +35,7 @@ export function DeleteNoteDialog({ id }: { id: string }) {
           <Icons.trash className='w-4 h-4 cursor-pointer z-50 hover:text-red-300' />
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='sm:max-w-[425px md]'>
         <DialogHeader>
           <DialogTitle>Are you sure you want to delete this note?</DialogTitle>
           <DialogDescription>

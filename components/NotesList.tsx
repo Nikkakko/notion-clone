@@ -80,21 +80,6 @@ const NotesList: React.FC<NotesListProps> = ({
     router.push(url);
   };
 
-  const handleMoveToTrash = async (
-    e: React.MouseEvent<SVGSVGElement>,
-    id: string
-  ) => {
-    startTransition(async () => {
-      e.stopPropagation();
-      await moveNoteToTrashAction(id);
-      resetNoteQuery();
-      toast({
-        title: 'Note moved to trash',
-        description: 'Note has been moved to trash',
-      });
-    });
-  };
-
   // className='flex flex-col bg-primary-foreground p-7 h-full min-h-screen'
 
   return (
@@ -127,14 +112,14 @@ const NotesList: React.FC<NotesListProps> = ({
               <CardContent className='p-0 mt-2 hidden md:block'>
                 <EditorComp content={note.content} />
               </CardContent>
-              <CardFooter className='justify-between p-0 mt-2 hidden md:block'>
-                <p className='text-sm text-muted-foreground'>
+              <CardFooter className='p-0 mt-2 flex-col items-start '>
+                <p className='text-sm text-muted-foreground hidden md:block'>
                   {formatDate(note.createdAt)}
                 </p>
 
-                <div className='flex items-center space-x-1'>
+                <div className='flex items-center space-x-1 md:mt-1 w-full'>
                   {pathname === '/trash' && (
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 justify-between w-full'>
                       <Icons.undo
                         className='w-4 h-4 cursor-pointer z-50 hover:text-blue-300'
                         onClick={(e: React.MouseEvent<SVGSVGElement>) => {
@@ -147,15 +132,6 @@ const NotesList: React.FC<NotesListProps> = ({
                       />
                       <DeleteNoteDialog id={note.id} />
                     </div>
-                  )}
-
-                  {pathname !== '/trash' && (
-                    <Icons.trash
-                      className='w-4 h-4 cursor-pointer z-50 hover:text-red-300'
-                      onClick={(e: React.MouseEvent<SVGSVGElement>) =>
-                        handleMoveToTrash(e, note.id)
-                      }
-                    />
                   )}
                 </div>
               </CardFooter>
