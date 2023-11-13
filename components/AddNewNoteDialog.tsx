@@ -31,6 +31,13 @@ export function AddNewNoteDialog({ id }: { id: string }) {
           description: 'Your note has been added to the folder',
         });
 
+        if (note?.loginError) {
+          toast({
+            title: 'Unauthorized',
+            description: 'Please login to add a note',
+          });
+        }
+
         if (note?.error) {
           toast({
             title: `${note.error}`,

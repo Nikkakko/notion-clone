@@ -14,15 +14,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from './icons';
 import { addFoldersAction } from '@/app/_actions/actions';
+import { useToast } from './ui/use-toast';
 
 export function AddFolderDialog() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [isPending, startTransition] = React.useTransition();
+  const { toast } = useToast();
 
   const handleAddFolder = (folderName: string) => {
     startTransition(async () => {
-      await addFoldersAction(folderName);
+      const data = await addFoldersAction(folderName);
+
+      if (data?.loginError) {
+        toast({
+          title: 'Unauthorized',
+          description: 'Please login to add a folder',
+        });
+      }
       setIsOpen(false);
     });
   };

@@ -8,7 +8,9 @@ export const addFoldersAction = async (folderName: string) => {
   const user = await currentUser();
 
   if (!user) {
-    return;
+    return {
+      loginError: 'Please login to create a folder',
+    };
   }
 
   //create new folder
@@ -29,7 +31,9 @@ export const addNoteAction = async (folderId: string, noteName: string) => {
   const user = await currentUser();
 
   if (!user) {
-    return;
+    return {
+      loginError: 'Please login to create a note',
+    };
   }
 
   if (!folderId) {

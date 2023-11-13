@@ -119,6 +119,7 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
 
                   {/* RECENTS */}
                   {link.type === 'RECENT' &&
+                    user &&
                     recentNotes.map(note => (
                       <div
                         key={note.id}
@@ -138,7 +139,8 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
                   {/* FOLDERS */}
                   {folders.map(
                     folder =>
-                      folder.type === link.type && (
+                      folder.type === link.type &&
+                      user && (
                         <div
                           className='flex items-center  w-full justify-between'
                           key={folder.id}
@@ -184,26 +186,29 @@ export default function MobileSidebar({ folders, recentNotes }: SidebarProps) {
 
                 {/* SUBLINKS  */}
                 <div className='flex flex-col space-y-2'>
-                  {link.sublinks?.map(sublink => (
-                    <Link
-                      key={sublink.title}
-                      href={sublink.href}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <div
-                        className={cn(
-                          'flex items-center space-x-2  p-1',
-                          pathname === sublink.href &&
-                            'bg-primary-foreground rounded-md',
-                          pathname !== sublink.href &&
-                            'hover:bg-primary-foreground rounded-md'
-                        )}
+                  {user &&
+                    link.sublinks?.map(sublink => (
+                      <Link
+                        key={sublink.title}
+                        href={sublink.href}
+                        onClick={() => setIsOpen(false)}
                       >
-                        <sublink.icon size={18} />
-                        <h3 className='text-sm font-medium'>{sublink.title}</h3>
-                      </div>
-                    </Link>
-                  ))}
+                        <div
+                          className={cn(
+                            'flex items-center space-x-2  p-1',
+                            pathname === sublink.href &&
+                              'bg-primary-foreground rounded-md',
+                            pathname !== sublink.href &&
+                              'hover:bg-primary-foreground rounded-md'
+                          )}
+                        >
+                          <sublink.icon size={18} />
+                          <h3 className='text-sm font-medium'>
+                            {sublink.title}
+                          </h3>
+                        </div>
+                      </Link>
+                    ))}
                 </div>
               </div>
             ))}
